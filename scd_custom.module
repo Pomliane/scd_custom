@@ -1,0 +1,49 @@
+<?php
+/**
+ * Implements hook_views_query_alter
+ * @param type $view
+ * @param type $query
+ */
+function scd_custom_views_query_alter(&$view, &$query) {
+  if ($view->name == 'menu_calendrier' && $view->current_display == 'block') {
+    $query->orderby = array(
+      array(
+        'field' => 'CASE WHEN field_data_field_event_date.field_event_date_value
+THEN field_data_field_event_date.field_event_date_value
+ELSE field_data_field_date.field_date_value END',
+        'direction' => 'ASC',
+      )
+    );
+  }
+}
+
+/**
+ * Implements hook_views_post_execute()
+ *
+ */
+function scd_custom_views_post_execute(&$view) {
+  if ($view->name == 'workshops' || $view->name == 'dev_formations_et_ateliers') {
+
+    kpr($view);
+
+    $tmp = array();
+    foreach($view->result as $k => $v) {
+      $tmp[$k] = $v->nid;
+    }
+
+  $tmp = array_unique($tmp);
+
+  kpr($tmp);
+
+  // Remove the duplicates from original array
+  foreach($view->result as $k => $v) {
+    if (!array_key_exists($k, $tmp)) {
+      unset($view->result[$k]);
+    }
+  }
+
+  kpr($view);
+
+  }
+
+}

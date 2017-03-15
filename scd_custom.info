@@ -1,0 +1,4 @@
+name = SCD Custom
+description = Custom tweaks for scdantilles
+package = SCD
+core = 7.x
