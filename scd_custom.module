@@ -1,4 +1,4 @@
-<?php
+  <?php
 /**
  * Implements hook_views_query_alter
  * @param type $view
@@ -24,26 +24,19 @@ ELSE field_data_field_date.field_date_value END',
 function scd_custom_views_post_execute(&$view) {
   if ($view->name == 'workshops' || $view->name == 'dev_formations_et_ateliers') {
 
-    kpr($view);
-
     $tmp = array();
     foreach($view->result as $k => $v) {
       $tmp[$k] = $v->nid;
     }
 
-  $tmp = array_unique($tmp);
+    $tmp = array_unique($tmp);
 
-  kpr($tmp);
-
-  // Remove the duplicates from original array
-  foreach($view->result as $k => $v) {
-    if (!array_key_exists($k, $tmp)) {
-      unset($view->result[$k]);
+    // Remove the duplicates from original array
+    foreach($view->result as $k => $v) {
+      if (!array_key_exists($k, $tmp)) {
+        unset($view->result[$k]);
+      }
     }
-  }
-
-  kpr($view);
-
   }
 
 }
